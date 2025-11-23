@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCIU Admin Panel</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  color: #333;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+header {
+  background: #fff;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  position: relative;
+  border-bottom: 3px solid #1a73e8;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 0 0 10px 10px;
+}
+header img {
+  width: 80px;
+}
+header .header-title {
+  text-align: center;
+  margin-left: 10px;
+}
+header .header-title h1 {
+  font-size: 22px;
+  margin: 0;
+  color: #222;
+}
+header .header-title h2 {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+.back-home-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #004080;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: auto;
+}
+
+.back-home-btn:hover {
+    background: #0066cc;
+}
+.auth-box, .panel {
+  max-width: 800px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+h2 { text-align: center; margin-bottom: 20px; color: #444; }
+
+input, button, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover { background: #155fc0; }
+
+.hidden { display: none; }
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+.docs-table { display: grid; gap: 15px; margin-top: 20px; }
+
+.doc-card {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+.doc-card h3 { font-size: 20px; margin-bottom: 10px; }
+.reject { background: #dc3545; }
+.status { font-weight: bold; }
+.status.pending { color: #b21f1f; }
+.status.approved { color: #28a745; }
+.status.rejected { color: #dc3545; }
+</style>
+</head>
+
+<body>
+<header>
+  <img src="PCIU_Logo.png" alt="PCIU Logo">
+  <div class="header-title">
+    <h1>Port City International University</h1>
+    <h2>Admin Portal</h2>
+  </div>
+  <button class="back-home-btn" onclick="goHome()">Back Home</button>
+</header>
+
+<!-- ADMIN LOGIN -->
+<div id="admin-auth" class="auth-box">
+  <h2>Admin Login</h2>
+  <input type="text" id="admin-email" placeholder="Enter Admin Email">
+  <input type="password" id="admin-pass" placeholder="Enter Password">
+  <button id="btn-admin-login">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" class="panel hidden">
+  <h2>Admin Dashboard</h2>
+  <button id="btn-admin-logout">Logout</button>
+
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search by Name, ID, or Document Title">
+    <select id="filter-status">
+      <option value="">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  </div>
+
+  <h3>Uploaded Documents</h3>
+  <div id="all-docs" class="docs-table"></div>
+</div>
+
+<script>
+const API = "http://localhost:5000/api";
+let token = localStorage.getItem("token_admin") || null;
+
+function goHome() {
+  window.location.href = "index.html";
+}
+
+const adminAuth = document.getElementById("admin-auth");
+const adminPanel = document.getElementById("admin-panel");
+const btnLogin = document.getElementById("btn-admin-login");
+const btnLogout = document.getElementById("btn-admin-logout");
+const docsTable = document.getElementById("all-docs");
+const searchInput = document.getElementById("search-input");
+const filterStatus = document.getElementById("filter-status");
+
+
+// -------------------- FIXED ADMIN LOGIN --------------------
+btnLogin.onclick = async () => {
+  const email = document.getElementById("admin-email").value.trim();
+  const password = document.getElementById("admin-pass").value.trim();
+
+  if (!email || !password) {
+    alert("Enter email & password");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || data.error || "Invalid credentials!");
+      return;
+    }
+
+    if (!data.user || data.user.role !== "admin") {
+      alert("Not an admin account!");
+      return;
+    }
+
+    token = data.token;
+    localStorage.setItem("token_admin", token);
+
+    adminAuth.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+
+    loadAllDocs();
+
+  } catch (err) {
+    alert("Server error or API not reachable");
+    console.log(err);
+  }
+};
+
+// -------------------- LOGOUT --------------------
+btnLogout.onclick = () => {
+  localStorage.removeItem("token_admin");
+  token = null;
+  adminPanel.classList.add("hidden");
+  adminAuth.classList.remove("hidden");
+};
+
+
+// -------------------- LOAD DOCUMENTS --------------------
+async function loadAllDocs() {
+  const res = await fetch(`${API}/doc/all`, {
+      headers: { Authorization: `Bearer ${token}` }
+  });
+
+  const data = await res.json();
+  if (!res.ok) return alert("Failed to load documents");
+
+  renderDocs(data.documents);
+}
+
+function renderDocs(list) {
+  docsTable.innerHTML = "";
+
+  let search = searchInput.value.toLowerCase();
+  let status = filterStatus.value;
+
+  const filtered = list.filter(doc =>
+      (status === "" || doc.status === status) &&
+      (
+        doc.name.toLowerCase().includes(search) ||
+        doc.student_id.toLowerCase().includes(search) ||
+        doc.originalname.toLowerCase().includes(search)
+      )
+  );
+
+  if (filtered.length === 0) {
+      docsTable.innerHTML = "<p>No documents found.</p>";
+      return;
+  }
+
+  filtered.forEach(doc => {
+      const card = document.createElement("div");
+      card.className = "doc-card";
+
+      card.innerHTML = `
+          <h3>${doc.originalname}</h3>
+          <p><b>Student:</b> ${doc.name} (${doc.student_id})</p>
+          <p><b>Email:</b> ${doc.email}</p>
+          <p><b>Date:</b> ${doc.created_at}</p>
+          <p><b>Status:</b> <span class="status ${doc.status}">
+              ${doc.status.toUpperCase()}
+          </span></p>
+
+          <p><a href="http://localhost:5000/uploads/${doc.filename}" target="_blank">View File</a></p>
+
+          <textarea placeholder="Write note..." id="note-${doc.id}">${doc.admin_note || ""}</textarea>
+
+          <button onclick="changeStatus(${doc.id}, 'approved')">Approve</button>
+          <button onclick="changeStatus(${doc.id}, 'rejected')" class="reject">Reject</button>
+      `;
+
+      docsTable.appendChild(card);
+  });
+}
+
+async function changeStatus(id, status) {
+  const note = document.getElementById(`note-${id}`).value;
+
+  const res = await fetch(`${API}/doc/status/${id}`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ status, admin_note: note })
+  });
+
+  const data = await res.json();
+  if (!res.ok) return alert(data.error);
+
+  alert("Updated!");
+  loadAllDocs();
+}
+
+searchInput.oninput = loadAllDocs;
+filterStatus.onchange = loadAllDocs;
+
+if (token) {
+    adminAuth.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+    loadAllDocs();
+}
+</script>
+
+
+</body>
+</html>

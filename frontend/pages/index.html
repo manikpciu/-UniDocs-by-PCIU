@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PCIU Student Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      text-align: center;
+      padding: 30px 15px 10px;
+    }
+    .logo {
+      width: 100px;
+      margin: 0 auto 15px;
+      display: block;
+    }
+    .brand-text .Large {
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .brand-text .title {
+      font-size: 20px;
+      font-weight: 400;
+      color: #eee;
+    }
+    .hero {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+    }
+    .hero-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 1000px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .hero-left, .hero-right {
+      flex: 1 1 350px;
+    }
+    .hero-left {
+      text-align: center;
+    }
+    .hero-logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+    .hero-title {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .hero-sub {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: #ddd;
+    }
+    .cta-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    .btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      text-decoration: none;
+    }
+    .btn.primary {
+      background: #1a73e8;
+      color: #fff;
+    }
+    .btn.primary:hover {
+      background: #155fc0;
+    }
+    .btn.outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+    }
+    .btn.outline:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .feature {
+      margin-bottom: 25px;
+    }
+    .feature h4 {
+      font-size: 20px;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+    .feature p {
+      color: #ddd;
+      font-size: 15px;
+    }
+    .site-footer {
+      text-align: center;
+      padding: 15px 10px;
+      background: rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="PCIU_Logo.png" class="logo" alt="PCIU Logo">
+    <div class="brand-text">
+      <div class="Large">Port City International University</div>
+      <div class="title">PCIU Student Portal</div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-card">
+      <div class="hero-left">
+        <div class="Large">
+  <img src="student_home.JPG" class="hero-logo" alt="PCIU logo" style="width:400px; height:auto;" />
+</div>
+
+        <h1 class="hero-title">Welcome to Student Portal</h1>
+        <p class="hero-sub">Learn · Implement · Share</p>
+        <div class="cta-row">
+          <a class="btn primary" href="student.html">Student Login</a>
+          <a class="btn outline" href="admin.html">Admin Login</a>
+        </div>
+      </div>
+<div class="hero-right">
+  <div class="feature">
+    <h4>Modern Design</h4>
+    <p>Glassmorphism, animated backgrounds, and sleek UI.</p>
+  </div>
+  
+  <div class="feature">
+    <h4>Student Uploads</h4>
+    <p>Upload assignments, projects, and documents easily.</p>
+  </div>
+  
+  <div class="feature">
+    <h4>Admin Access</h4>
+    <p>Admins manage, review, and approve submissions.</p>
+  </div>
+  <div class="feature">
+    <h4>Student Dashboard</h4>
+    <p>Track assignments, deadlines, and progress in one place.</p>
+  </div>
+
+  <div class="feature">
+    <h4>Interactive Learning</h4>
+    <p>Access study materials, notes, and practice tests anytime.</p>
+  </div>
+</div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © <span id="year"></span> PCIU • Built for demo
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

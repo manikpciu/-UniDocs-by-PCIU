@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCIU Student Portal</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background-size: 400% 400%;
+    animation: gradientBG 12s ease infinite;
+    color: #333;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+header {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+header img { width: 100px; margin-bottom: 8px; }
+header h1 { margin: 0; color: #222; }
+
+.back-home-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #004080;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: auto;
+}
+.back-home-btn:hover { background: #0066cc; }
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.hidden { display: none; }
+h2 { text-align: center; margin-bottom: 20px; color: #444; }
+input, button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+button {
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover { background: #155fc0; }
+
+.docs-table { margin-top: 20px; }
+.doc-card {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+.status-pending { color: #b21f1f; font-weight: bold; }
+.status-approved { color: #28a745; font-weight: bold; }
+.status-rejected { color: #dc3545; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<header>
+    <img src="PCIU_Logo.png" alt="PCIU Logo">
+    <h1>Port City International University</h1>
+    <button class="back-home-btn" onclick="window.location.href='index.html'">Back Home</button>
+</header>
+
+<div class="container" id="auth-section">
+    <h2 id="auth-title">Student Login</h2>
+    <div id="login-form">
+        <input type="email" id="login-email" placeholder="PCIU Email">
+        <input type="password" id="login-pass" placeholder="Password">
+        <button id="btn-login">Login</button>
+        <p>New here? <a href="#" id="go-register">Create an account</a></p>
+    </div>
+
+<div id="register-form" class="hidden">
+    <input type="text" id="reg-name" placeholder="Full Name">
+    <input type="text" id="reg-id" placeholder="Student ID">
+    <input type="email" id="reg-email" placeholder="PCIU Email">
+    <input type="password" id="reg-pass" placeholder="Password">
+    <button id="btn-register">Create Account</button>
+    <p>Already have an account? <a href="#" id="go-login">Back to Login</a></p>
+</div>
+</div>
+
+<div class="container hidden" id="dashboard">
+    <h2>Student Dashboard</h2>
+    <p><b>Name:</b> <span id="d-name"></span></p>
+    <p><b>Email:</b> <span id="d-email"></span></p>
+    <p><b>Student ID:</b> <span id="d-sid"></span></p>
+    <button id="btn-logout">Logout</button>
+
+    <hr>
+    <h3>Upload Document</h3>
+    <input type="text" id="doc-title" placeholder="Document Title">
+    <input type="file" id="doc-file">
+    <button id="btn-upload">Upload</button>
+
+    <h3>My Submissions</h3>
+    <div id="my-docs" class="docs-table"></div>
+</div>
+
+<script>
+const API = "http://localhost:5000/api";
+
+const authSection = document.getElementById("auth-section");
+const dashboard = document.getElementById("dashboard");
+const goRegister = document.getElementById("go-register");
+const goLogin = document.getElementById("go-login");
+const btnRegister = document.getElementById("btn-register");
+const btnLogin = document.getElementById("btn-login");
+const btnLogout = document.getElementById("btn-logout");
+const btnUpload = document.getElementById("btn-upload");
+
+const dName = document.getElementById("d-name");
+const dEmail = document.getElementById("d-email");
+const dSID = document.getElementById("d-sid");
+const myDocs = document.getElementById("my-docs");
+
+let token = localStorage.getItem("token") || null;
+
+goRegister.onclick = () => {
+    document.getElementById("login-form").classList.add("hidden");
+    document.getElementById("register-form").classList.remove("hidden");
+};
+goLogin.onclick = () => {
+    document.getElementById("register-form").classList.add("hidden");
+    document.getElementById("login-form").classList.remove("hidden");
+};
+
+btnRegister.onclick = async () => {
+    const name = document.getElementById("reg-name").value.trim();
+    const sid = document.getElementById("reg-id").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const pass = document.getElementById("reg-pass").value.trim();
+
+    if (!name || !sid || !email || !pass) return alert("All fields required!");
+
+    const res = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, student_id: sid, email, password: pass, role: "student" })
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error);
+
+    alert("Account created!");
+    goLogin.click();
+};
+
+btnLogin.onclick = async () => {
+    const email = document.getElementById("login-email").value.trim();
+    const pass = document.getElementById("login-pass").value.trim();
+
+    if (!email || !pass) return alert("Enter email & password!");
+
+    const res = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pass })
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error);
+
+    token = data.token;
+    localStorage.setItem("token", token);
+
+    loadMe();
+};
+
+async function loadMe() {
+    if (!token) return;
+
+    const res = await fetch(`${API}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert("Login again");
+
+    const user = data.user; // CORRECT
+    console.log("User Loaded:", user);
+
+    authSection.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    dName.textContent = user.name;
+    dEmail.textContent = user.email;
+    dSID.textContent = user.student_id;
+
+    loadDocuments();  // MUST HAVE
+}
+
+btnLogout.onclick = () => {
+    token = null;
+    localStorage.removeItem("token");
+    dashboard.classList.add("hidden");
+    authSection.classList.remove("hidden");
+};
+
+btnUpload.onclick = async () => {
+    const title = document.getElementById("doc-title").value.trim();
+    const file = document.getElementById("doc-file").files[0];
+
+    if (!title || !file) return alert("Enter title & file!");
+
+    const form = new FormData();
+    form.append("title", title);
+    form.append("document", file);
+
+    const res = await fetch(`${API}/doc/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: form
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error);
+
+    alert("Uploaded!");
+    document.getElementById("doc-title").value = "";
+    document.getElementById("doc-file").value = "";
+
+    loadDocuments();
+};
+
+async function loadDocuments() {
+    const res = await fetch(`${API}/doc/my`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    if (!res.ok) return;
+
+    const docs = data.documents;
+
+    myDocs.innerHTML = "";
+
+    if (docs.length === 0) {
+        myDocs.innerHTML = "<p>No documents uploaded yet.</p>";
+        return;
+    }
+
+    docs.forEach(doc => {
+        const div = document.createElement("div");
+        div.className = "doc-card";
+
+        div.innerHTML = `
+            <h4>${doc.originalname}</h4>
+            <p><b>Uploaded:</b> ${doc.created_at || ""}</p>
+            <p>Status: <span class="status-${doc.status}">${doc.status}</span></p>
+            <p><a target="_blank" href="http://localhost:5000/uploads/${doc.filename}">View</a></p>
+            ${doc.admin_note ? `<p><b>Admin Note:</b> ${doc.admin_note}</p>` : ""}
+        `;
+
+        myDocs.appendChild(div);
+    });
+}
+
+if (token) loadMe();
+</script>
+
+</body>   
+</html>
