@@ -248,7 +248,7 @@ function renderDocs(list) {
   const filtered = list.filter(doc =>
       (status === "" || doc.status === status) &&
       (
-        doc.name.toLowerCase().includes(search) ||
+        (doc.student_name||"").toLowerCase().includes(search) ||
         doc.student_id.toLowerCase().includes(search) ||
         doc.originalname.toLowerCase().includes(search)
       )
@@ -265,7 +265,7 @@ function renderDocs(list) {
 
       card.innerHTML = `
           <h3>${doc.originalname}</h3>
-          <p><b>Student:</b> ${doc.name} (${doc.student_id})</p>
+         <p><b>Student:</b> ${doc.student_name||""} (${doc.student_id||""})</p>
           <p><b>Email:</b> ${doc.email}</p>
           <p><b>Date:</b> ${doc.created_at}</p>
           <p><b>Status:</b> <span class="status ${doc.status}">
