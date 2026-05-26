@@ -1,200 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PCIU Student Portal</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    header {
-      text-align: center;
-      padding: 30px 15px 10px;
-    }
-    .logo {
-      width: 100px;
-      margin: 0 auto 15px;
-      display: block;
-    }
-    .brand-text .Large {
-      font-size: 28px;
-      font-weight: bold;
-      color: #fff;
-    }
-    .brand-text .title {
-      font-size: 20px;
-      font-weight: 400;
-      color: #eee;
-    }
-    .hero {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 20px;
-    }
-    .hero-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 1000px;
-      width: 100%;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-    }
-    .hero-left, .hero-right {
-      flex: 1 1 350px;
-    }
-    .hero-left {
-      text-align: center;
-    }
-    .hero-logo {
-      width: 80px;
-      margin-bottom: 15px;
-    }
-    .hero-title {
-      font-size: 32px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-    .hero-sub {
-      font-size: 16px;
-      margin-bottom: 30px;
-      color: #ddd;
-    }
-    .cta-row {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
-    .btn {
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      text-decoration: none;
-    }
-    .btn.primary {
-      background: #1a73e8;
-      color: #fff;
-    }
-    .btn.primary:hover {
-      background: #155fc0;
-    }
-    .btn.outline {
-      background: transparent;
-      color: #fff;
-      border: 2px solid #fff;
-    }
-    .btn.outline:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-    .feature {
-      margin-bottom: 25px;
-    }
-    .feature h4 {
-      font-size: 20px;
-      margin-bottom: 5px;
-      color: #fff;
-    }
-    .feature p {
-      color: #ddd;
-      font-size: 15px;
-    }
-    .site-footer {
-      text-align: center;
-      padding: 15px 10px;
-      background: rgba(0, 0, 0, 0.3);
-      font-size: 14px;
-      color: #eee;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCIU DocTrack — Student Portal</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1b3e;--navy2:#112244;--navy3:#162a52;
+  --gold:#c9a84c;--gold2:#e2c06a;
+  --text:#f0f4ff;--muted:#8899bb;
+  --border:rgba(201,168,76,0.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--navy);color:var(--text);min-height:100vh}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(13,27,62,0.97);border-bottom:1px solid var(--border);height:72px;display:flex;align-items:center;padding:0 64px;justify-content:space-between;backdrop-filter:blur(12px)}
+.nav-brand{display:flex;align-items:center;gap:16px}
+.nav-logo-wrap{width:52px;height:52px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;border:2px solid var(--gold)}
+.nav-logo-wrap img{width:100%;height:100%;object-fit:contain;padding:4px}
+.nav-brand-name{font-size:20px;font-weight:900;color:var(--text);line-height:1.2}
+.nav-brand-sub{font-size:13px;color:var(--muted)}
+.nav-links{display:flex;align-items:center;gap:14px}
+.nav-year{padding:8px 18px;border-radius:20px;border:1px solid var(--border);font-size:14px;color:var(--gold);font-weight:600}
+.nav-a{padding:11px 24px;border-radius:9px;font-size:15px;font-weight:700;text-decoration:none;transition:all .2s}
+.nav-a.ghost{color:var(--muted);border:1px solid rgba(255,255,255,0.14)}
+.nav-a.ghost:hover{color:var(--text);border-color:var(--gold)}
+.nav-a.solid{background:var(--gold);color:var(--navy)}
+.nav-a.solid:hover{background:var(--gold2)}
+
+.hero{min-height:calc(100vh - 72px);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:60px 64px;gap:60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.09) 0%,transparent 65%);top:-150px;right:-150px;pointer-events:none}
+.hero-left{position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:12px;margin-bottom:36px}
+.hero-tag-line{width:40px;height:2px;background:var(--gold)}
+.hero-tag-text{font-size:13px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.hero h1{font-size:68px;font-weight:900;line-height:1.0;margin-bottom:28px}
+.hero h1 em{font-style:italic;color:var(--gold);display:block}
+.hero-desc{font-size:19px;color:var(--muted);line-height:1.8;margin-bottom:44px;max-width:520px}
+.hero-btns{display:flex;gap:16px;margin-bottom:60px;flex-wrap:wrap}
+.btn-gold{padding:17px 36px;background:var(--gold);color:var(--navy);border:none;border-radius:10px;font-size:17px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .25s}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 32px rgba(201,168,76,0.28)}
+.btn-border{padding:17px 36px;background:transparent;color:var(--text);border:2px solid rgba(255,255,255,0.18);border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .25s}
+.btn-border:hover{border-color:var(--gold);color:var(--gold)}
+.hero-stats{display:flex;gap:0}
+.h-stat{padding:0 36px 0 0;border-right:1px solid rgba(255,255,255,0.1);margin-right:36px}
+.h-stat:last-child{border-right:none;margin-right:0}
+.h-stat-num{font-size:40px;font-weight:900;color:var(--text);line-height:1}
+.h-stat-label{font-size:14px;color:var(--muted);margin-top:5px}
+.hero-right{position:relative;z-index:1;display:flex;flex-direction:column;gap:20px}
+.hero-right-title{font-size:14px;font-weight:700;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.portal-card{background:var(--navy2);border:1.5px solid var(--border);border-radius:18px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all .25s}
+.portal-card:hover{border-color:var(--gold);background:rgba(201,168,76,0.06);transform:translateX(6px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.portal-left{display:flex;align-items:center;gap:20px}
+.portal-icon{width:64px;height:64px;border-radius:16px;background:rgba(201,168,76,0.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.portal-name{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
+.portal-desc{font-size:15px;color:var(--muted);line-height:1.5}
+.portal-arrow{font-size:32px;color:var(--gold);font-weight:300;flex-shrink:0}
+
+section{padding:100px 64px}
+.sec-tag{font-size:13px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:16px}
+.sec-title{font-size:44px;font-weight:900;text-align:center;margin-bottom:60px;color:var(--text)}
+
+.features-section{background:var(--navy2)}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:1100px;margin:0 auto}
+.feat-card{background:var(--navy3);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:40px;transition:all .25s}
+.feat-card:hover{border-color:var(--border);transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,0.28)}
+.feat-emoji{font-size:48px;margin-bottom:20px;display:block}
+.feat-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:12px}
+.feat-desc{font-size:16px;color:var(--muted);line-height:1.75}
+
+.how-section{background:var(--navy)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1100px;margin:0 auto}
+.step{text-align:center;background:var(--navy2);border:1px solid var(--border);border-radius:18px;padding:40px 28px;transition:all .25s}
+.step:hover{transform:translateY(-4px);border-color:var(--gold)}
+.step-num{width:72px;height:72px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:26px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.step-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:12px}
+.step-desc{font-size:16px;color:var(--muted);line-height:1.7}
+
+footer{background:rgba(0,0,0,0.4);border-top:1px solid var(--border);padding:36px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-brand{font-size:18px;font-weight:900;color:var(--gold)}
+.footer-copy{font-size:14px;color:var(--muted)}
+.footer-links{display:flex;gap:28px}
+.footer-links a{font-size:14px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;padding:60px 32px;min-height:auto;gap:48px}
+  .hero h1{font-size:48px}
+  section,nav,footer{padding-left:28px;padding-right:28px}
+  .features-grid,.steps{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-
-  <header>
-    <img src="PCIU_Logo.png" class="logo" alt="PCIU Logo">
-    <div class="brand-text">
-      <div class="Large">Port City International University</div>
-      <div class="title">PCIU Student Portal</div>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo-wrap">
+      <img src="PCIU_Logo.png" alt="PCIU">
     </div>
-  </header>
+    <div>
+      <div class="nav-brand-name">PCIU DocTrack</div>
+      <div class="nav-brand-sub">Port City International University</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <span class="nav-year">Academic Year 2025–26</span>
+    <a href="student.html" class="nav-a ghost">Student Login</a>
+    <a href="admin.html" class="nav-a solid">Admin Panel</a>
+  </div>
+</nav>
 
-  <main class="hero">
-    <div class="hero-card">
-      <div class="hero-left">
-        <div class="Large">
-  <img src="student_home.JPG" class="hero-logo" alt="PCIU logo" style="width:400px; height:auto;" />
-</div>
-
-        <h1 class="hero-title">Welcome to Student Portal</h1>
-        <p class="hero-sub">Learn · Implement · Share</p>
-        <div class="cta-row">
-          <a class="btn primary" href="student.html">Student Login</a>
-          <a class="btn outline" href="admin.html">Admin Login</a>
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <div class="hero-tag-line"></div>
+      <div class="hero-tag-text">Document Management System</div>
+    </div>
+    <h1>Submit. Track.<em>Get Cleared.</em></h1>
+    <p class="hero-desc">A secure portal for PCIU students to submit academic documents and receive real-time approval updates — all in one place.</p>
+    <div class="hero-btns">
+      <a href="student.html" class="btn-gold">👤 Student Login</a>
+      <a href="admin.html" class="btn-border">🔒 Admin Access</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-num">3</div><div class="h-stat-label">Status Stages</div></div>
+      <div class="h-stat"><div class="h-stat-num">100%</div><div class="h-stat-label">Online Process</div></div>
+      <div class="h-stat"><div class="h-stat-num">24h</div><div class="h-stat-label">Email Alerts</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-title">Choose Your Portal</div>
+    <a href="student.html" class="portal-card">
+      <div class="portal-left">
+        <div class="portal-icon">🎓</div>
+        <div>
+          <div class="portal-name">Student Portal</div>
+          <div class="portal-desc">Upload docs, track status, view admin notes and get email alerts</div>
         </div>
       </div>
-<div class="hero-right">
-  <div class="feature">
-    <h4>Modern Design</h4>
-    <p>Glassmorphism, animated backgrounds, and sleek UI.</p>
+      <div class="portal-arrow">›</div>
+    </a>
+    <a href="admin.html" class="portal-card">
+      <div class="portal-left">
+        <div class="portal-icon">🛡️</div>
+        <div>
+          <div class="portal-name">Admin Dashboard</div>
+          <div class="portal-desc">Review, approve or reject student submissions with notes</div>
+        </div>
+      </div>
+      <div class="portal-arrow">›</div>
+    </a>
   </div>
-  
-  <div class="feature">
-    <h4>Student Uploads</h4>
-    <p>Upload assignments, projects, and documents easily.</p>
+</section>
+
+<section class="features-section">
+  <div class="sec-tag">What This Portal Does</div>
+  <div class="sec-title">Everything in one place</div>
+  <div class="features-grid">
+    <div class="feat-card"><span class="feat-emoji">📤</span><div class="feat-title">Easy Upload</div><div class="feat-desc">Submit PDF documents directly from your browser, anytime. Drag & drop supported for quick submission.</div></div>
+    <div class="feat-card"><span class="feat-emoji">🔍</span><div class="feat-title">Live Tracking</div><div class="feat-desc">See Pending, Approved, or Rejected status in real time after admin reviews your file.</div></div>
+    <div class="feat-card"><span class="feat-emoji">✉️</span><div class="feat-title">Email Alerts</div><div class="feat-desc">Automatic notifications when your document status changes — no need to keep checking manually.</div></div>
+    <div class="feat-card"><span class="feat-emoji">🔒</span><div class="feat-title">Secure Access</div><div class="feat-desc">JWT-protected login with encrypted passwords. Your documents and data stay completely private.</div></div>
   </div>
-  
-  <div class="feature">
-    <h4>Admin Access</h4>
-    <p>Admins manage, review, and approve submissions.</p>
+</section>
+
+<section class="how-section">
+  <div class="sec-tag">How It Works</div>
+  <div class="sec-title">3 simple steps</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-title">Register & Login</div><div class="step-desc">Create your student account using your PCIU email and student ID. Takes less than a minute.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-title">Upload Document</div><div class="step-desc">Select your course, upload your document with a title. Goes directly to admin for review.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-title">Get Cleared</div><div class="step-desc">Admin approves or rejects. You get notified instantly via email with admin notes.</div></div>
   </div>
-  <div class="feature">
-    <h4>Student Dashboard</h4>
-    <p>Track assignments, deadlines, and progress in one place.</p>
+</section>
+
+<footer>
+  <div class="footer-brand">PCIU DocTrack</div>
+  <div class="footer-copy">© <span id="yr"></span> Port City International University · All rights reserved</div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Support</a>
+    <a href="#">Contact</a>
   </div>
-
-  <div class="feature">
-    <h4>Interactive Learning</h4>
-    <p>Access study materials, notes, and practice tests anytime.</p>
-  </div>
-</div>
-
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    © <span id="year"></span> PCIU • Built for demo
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 </body>
 </html>

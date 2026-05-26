@@ -3,150 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCIU Admin Panel</title>
-
+<title>Admin Panel — PCIU DocTrack</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-  background-size: 400% 400%;
-  animation: gradientBG 12s ease infinite;
-  color: #333;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1b3e;--navy2:#112244;--navy3:#162a52;
+  --gold:#c9a84c;--gold2:#e2c06a;
+  --text:#f0f4ff;--muted:#8899bb;
+  --border:rgba(201,168,76,0.2);
 }
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-header {
-  background: #fff;
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-  position: relative;
-  border-bottom: 3px solid #1a73e8;
-  width: 90%;
-  margin: 0 auto;
-  border-radius: 0 0 10px 10px;
-}
-header img {
-  width: 80px;
-}
-header .header-title {
-  text-align: center;
-  margin-left: 10px;
-}
-header .header-title h1 {
-  font-size: 22px;
-  margin: 0;
-  color: #222;
-}
-header .header-title h2 {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
-}
-.back-home-btn {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #004080;
-    color: #fff;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: auto;
-}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
-.back-home-btn:hover {
-    background: #0066cc;
-}
-.auth-box, .panel {
-  max-width: 800px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-h2 { text-align: center; margin-bottom: 20px; color: #444; }
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:70px;background:rgba(13,27,62,0.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-logo-wrap{width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;border:2px solid var(--gold)}
+.nav-logo-wrap img{width:100%;height:100%;object-fit:contain;padding:3px}
+.nav-title{font-size:16px;font-weight:800;color:var(--text)}
+.nav-sub{font-size:11px;color:var(--muted)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.home-link{color:var(--muted);font-size:14px;text-decoration:none;padding:8px 18px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);transition:all .2s}
+.home-link:hover{color:var(--text);border-color:var(--border)}
+.logout-btn{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:none;transition:all .2s}
+.logout-btn:hover{background:rgba(239,68,68,0.2)}
 
-input, button, select, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
+.auth-page{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px}
+.auth-card{background:var(--navy2);border:1.5px solid var(--border);border-radius:22px;padding:50px 48px;width:100%;max-width:460px}
+.auth-header{text-align:center;margin-bottom:36px}
+.auth-icon{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;overflow:hidden;border:2px solid var(--gold)}
+.auth-icon img{width:100%;height:100%;object-fit:contain;padding:6px}
+.auth-header h2{font-size:28px;font-weight:900}
+.auth-header p{font-size:15px;color:var(--muted);margin-top:6px}
+.field-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px}
+.field-input{width:100%;background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.08);border-radius:11px;padding:15px 18px;color:var(--text);font-size:16px;outline:none;transition:all .2s;margin-bottom:20px}
+.field-input:focus{border-color:var(--gold);background:rgba(201,168,76,0.05)}
+.field-input::placeholder{color:#4a5a7a}
+.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),#c07a00);color:var(--navy);border:none;border-radius:11px;font-size:17px;font-weight:900;cursor:pointer;transition:all .2s}
+.btn-submit:hover{background:var(--gold2)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
 
-button {
-  background: #1a73e8;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-button:hover { background: #155fc0; }
+.admin-page{display:none;flex:1;padding:36px 60px 80px;max-width:1200px;width:100%;margin:0 auto}
+.page-head{margin-bottom:28px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.page-head h2{font-size:28px;font-weight:900}
+.page-head p{font-size:14px;color:var(--muted);margin-top:4px}
 
-.hidden { display: none; }
+/* COURSE LINK GENERATOR */
+.link-gen-box{background:var(--navy2);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:28px}
+.link-gen-title{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.link-gen-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.link-gen-row select{flex:1;min-width:200px;background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.08);border-radius:9px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;cursor:pointer}
+.link-gen-row select option{background:var(--navy2)}
+.btn-gen{padding:11px 20px;background:var(--gold);color:var(--navy);border:none;border-radius:9px;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.btn-gen:hover{background:var(--gold2)}
+.link-result{margin-top:12px;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--gold);word-break:break-all;display:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn-copy{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--border);padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-copy:hover{background:rgba(201,168,76,0.25)}
 
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-}
-.docs-table { display: grid; gap: 15px; margin-top: 20px; }
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.stat-card .s-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-card .s-num{font-size:34px;font-weight:900}
+.s-num.all{color:var(--text)}
+.s-num.pend{color:#fde047}
+.s-num.appr{color:#86efac}
+.s-num.rej{color:#fca5a5}
 
-.doc-card {
-  background: #fafafa;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+/* COURSE TABS */
+.course-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.course-tab{padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s}
+.course-tab:hover{border-color:var(--gold);color:var(--gold)}
+.course-tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+.controls{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.search-box{flex:1;min-width:200px;background:var(--navy2);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:14px;outline:none;transition:all .2s}
+.search-box:focus{border-color:var(--gold)}
+.search-box::placeholder{color:#4a5a7a}
+.filter-sel{background:var(--navy2);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:14px;outline:none;cursor:pointer;font-weight:600}
+.filter-sel option{background:var(--navy2)}
+
+/* DOCUMENT TABLE */
+.doc-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead tr{background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border)}
+thead th{padding:14px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.05);transition:background .15s}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+tbody tr:last-child{border-bottom:none}
+td{padding:14px 16px;color:var(--text);vertical-align:middle}
+.td-file{display:flex;align-items:center;gap:10px}
+.td-file-icon{width:36px;height:36px;background:rgba(201,168,76,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+.badge.pending{background:rgba(234,179,8,0.12);color:#fde047;border:1px solid rgba(234,179,8,0.25)}
+.badge.approved{background:rgba(34,197,94,0.12);color:#86efac;border:1px solid rgba(34,197,94,0.25)}
+.badge.rejected{background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.25)}
+.note-cell{display:flex;gap:6px;align-items:center;min-width:200px}
+.note-mini{flex:1;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:8px 10px;color:var(--text);font-size:13px;outline:none;resize:none;height:36px;font-family:inherit;transition:border-color .2s}
+.note-mini:focus{border-color:var(--gold)}
+.note-mini::placeholder{color:#4a5a7a}
+.btn-approve-sm{padding:7px 14px;background:rgba(34,197,94,0.12);color:#86efac;border:1px solid rgba(34,197,94,0.3);border-radius:7px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .2s}
+.btn-approve-sm:hover:not(:disabled){background:rgba(34,197,94,0.25)}
+.btn-approve-sm:disabled{opacity:.35;cursor:not-allowed}
+.btn-reject-sm{padding:7px 14px;background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);border-radius:7px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .2s}
+.btn-reject-sm:hover:not(:disabled){background:rgba(239,68,68,0.25)}
+.btn-reject-sm:disabled{opacity:.35;cursor:not-allowed}
+.btn-view-sm{color:var(--gold);font-size:12px;font-weight:700;text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:7px;white-space:nowrap;transition:all .2s}
+.btn-view-sm:hover{background:rgba(201,168,76,0.1)}
+.action-cell{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.empty-state{text-align:center;padding:44px;color:#4a5a7a;font-size:15px}
+
+.toast{position:fixed;top:22px;right:22px;padding:14px 24px;border-radius:11px;font-size:14px;font-weight:700;z-index:999;display:none;max-width:360px;border:1px solid}
+.toast.success{background:#0a2e1a;border-color:#22c55e;color:#86efac}
+.toast.error{background:#2e0a0a;border-color:#ef4444;color:#fca5a5}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:900px){
+  nav,.admin-page{padding-left:18px;padding-right:18px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .auth-card{padding:32px 20px}
 }
-.doc-card h3 { font-size: 20px; margin-bottom: 10px; }
-.reject { background: #dc3545; }
-.status { font-weight: bold; }
-.status.pending { color: #b21f1f; }
-.status.approved { color: #28a745; }
-.status.rejected { color: #dc3545; }
 </style>
 </head>
-
 <body>
-<header>
-  <img src="PCIU_Logo.png" alt="PCIU Logo">
-  <div class="header-title">
-    <h1>Port City International University</h1>
-    <h2>Admin Portal</h2>
-  </div>
-  <button class="back-home-btn" onclick="goHome()">Back Home</button>
-</header>
 
-<!-- ADMIN LOGIN -->
-<div id="admin-auth" class="auth-box">
-  <h2>Admin Login</h2>
-  <input type="text" id="admin-email" placeholder="Enter Admin Email">
-  <input type="password" id="admin-pass" placeholder="Enter Password">
-  <button id="btn-admin-login">Login</button>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo-wrap"><img src="PCIU_Logo.png" alt="PCIU"></div>
+    <div>
+      <div class="nav-title">Admin Panel</div>
+      <div class="nav-sub">PCIU DocTrack</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="index.html" class="home-link">← Home</a>
+    <button class="logout-btn" id="btn-logout">Logout</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div class="auth-page" id="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon"><img src="PCIU_Logo.png" alt="PCIU"></div>
+      <h2>Admin Login</h2>
+      <p>Enter your admin credentials to continue</p>
+    </div>
+    <label class="field-label">Admin Email</label>
+    <input class="field-input" type="email" id="admin-email" placeholder="admin@pciu.ac.bd">
+    <label class="field-label">Password</label>
+    <input class="field-input" type="password" id="admin-pass" placeholder="Enter admin password">
+    <button class="btn-submit" id="btn-login">Login as Admin</button>
+  </div>
 </div>
 
 <!-- ADMIN PANEL -->
-<div id="admin-panel" class="panel hidden">
-  <h2>Admin Dashboard</h2>
-  <button id="btn-admin-logout">Logout</button>
+<div class="admin-page" id="admin-page">
+  <div class="page-head">
+    <div>
+      <h2>Admin Dashboard</h2>
+      <p>Review and manage all student document submissions by course</p>
+    </div>
+  </div>
 
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Search by Name, ID, or Document Title">
-    <select id="filter-status">
+  <!-- COURSE LINK GENERATOR -->
+  <div class="link-gen-box">
+    <div class="link-gen-title">🔗 Generate Course Submission Link</div>
+    <div class="link-gen-row">
+      <select id="link-course-sel">
+        <option value="">— Select a course —</option>
+      </select>
+      <button class="btn-gen" onclick="generateLink()">Generate Link</button>
+    </div>
+    <div class="link-result" id="link-result" style="display:none">
+      <span id="link-text"></span>
+      <button class="btn-copy" onclick="copyLink()">Copy</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="s-lbl">Total</div><div class="s-num all" id="s-total">0</div></div>
+    <div class="stat-card"><div class="s-lbl">Pending</div><div class="s-num pend" id="s-pending">0</div></div>
+    <div class="stat-card"><div class="s-lbl">Approved</div><div class="s-num appr" id="s-approved">0</div></div>
+    <div class="stat-card"><div class="s-lbl">Rejected</div><div class="s-num rej" id="s-rejected">0</div></div>
+  </div>
+
+  <!-- COURSE TABS -->
+  <div class="course-tabs" id="course-tabs">
+    <button class="course-tab active" onclick="filterCourse('')" data-course="">All Courses</button>
+  </div>
+
+  <div class="controls">
+    <input class="search-box" type="text" id="search-input" placeholder="🔍  Search by name, student ID, or file name...">
+    <select class="filter-sel" id="filter-status">
       <option value="">All Status</option>
       <option value="pending">Pending</option>
       <option value="approved">Approved</option>
@@ -154,165 +203,226 @@ button:hover { background: #155fc0; }
     </select>
   </div>
 
-  <h3>Uploaded Documents</h3>
-  <div id="all-docs" class="docs-table"></div>
+  <div class="doc-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Course</th>
+          <th>Student</th>
+          <th>Student ID</th>
+          <th>Uploaded</th>
+          <th>Status</th>
+          <th>Note</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="doc-tbody">
+        <tr><td colspan="8" class="empty-state">Loading documents...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
 const API = "http://localhost:5000/api";
-let token = localStorage.getItem("token_admin") || null;
+let token = localStorage.getItem("pciu_admin_token");
+let allDocs = [];
+let activeCourse = '';
 
-function goHome() {
-  window.location.href = "index.html";
+const COURSES = [
+  "CSE101 — Introduction to Programming",
+  "CSE201 — Data Structures",
+  "CSE301 — Software Engineering",
+  "CSE401 — Machine Learning",
+  "BBA101 — Business Communication",
+  "BBA201 — Financial Accounting",
+  "EEE101 — Basic Electronics",
+  "EEE201 — Circuit Analysis",
+  "ENG101 — English for Academic Purposes",
+];
+
+function initCourses(){
+  const sel = document.getElementById("link-course-sel");
+  COURSES.forEach(c=>{
+    const opt = document.createElement("option");
+    opt.value=c; opt.textContent=c; sel.appendChild(opt);
+  });
+}
+initCourses();
+
+function generateLink(){
+  const course = document.getElementById("link-course-sel").value;
+  if(!course){toast("Please select a course","error");return;}
+  const code = course.split("—")[0].trim();
+  const link = `${location.origin}${location.pathname.replace('admin.html','student.html')}?course=${encodeURIComponent(code)}`;
+  document.getElementById("link-text").textContent = link;
+  document.getElementById("link-result").style.display = "flex";
 }
 
-const adminAuth = document.getElementById("admin-auth");
-const adminPanel = document.getElementById("admin-panel");
-const btnLogin = document.getElementById("btn-admin-login");
-const btnLogout = document.getElementById("btn-admin-logout");
-const docsTable = document.getElementById("all-docs");
-const searchInput = document.getElementById("search-input");
-const filterStatus = document.getElementById("filter-status");
+function copyLink(){
+  const txt = document.getElementById("link-text").textContent;
+  navigator.clipboard.writeText(txt).then(()=>toast("Link copied!")).catch(()=>{
+    const ta=document.createElement("textarea");
+    ta.value=txt; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
+    toast("Link copied!");
+  });
+}
 
+function toast(msg,type="success"){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.className="toast "+type; t.style.display="block";
+  setTimeout(()=>t.style.display="none",3500);
+}
 
-// -------------------- FIXED ADMIN LOGIN --------------------
-btnLogin.onclick = async () => {
-  const email = document.getElementById("admin-email").value.trim();
-  const password = document.getElementById("admin-pass").value.trim();
+document.getElementById("btn-login").onclick = async ()=>{
+  const email=document.getElementById("admin-email").value.trim();
+  const pass=document.getElementById("admin-pass").value;
+  if(!email||!pass){toast("Enter email and password","error");return;}
+  const btn=document.getElementById("btn-login");
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Logging in...';
+  try{
+    const res=await fetch(`${API}/auth/login`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password:pass})});
+    const data=await res.json();
+    if(!res.ok){toast(data.message||data.error||"Invalid credentials","error");return;}
+    if(!data.user||data.user.role!=="admin"){toast("Not an admin account","error");return;}
+    token=data.token; localStorage.setItem("pciu_admin_token",token);
+    showPanel(); toast("Welcome, Admin!");
+  }catch{toast("Cannot connect to server","error");}
+  finally{btn.disabled=false;btn.textContent="Login as Admin";}
+};
 
-  if (!email || !password) {
-    alert("Enter email & password");
-    return;
-  }
+document.getElementById("btn-logout").onclick = ()=>{
+  localStorage.removeItem("pciu_admin_token"); token=null;
+  document.getElementById("admin-page").style.display="none";
+  document.getElementById("auth-page").style.display="flex";
+  document.getElementById("btn-logout").style.display="none";
+};
 
-  try {
-    const res = await fetch(`${API}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+function showPanel(){
+  document.getElementById("auth-page").style.display="none";
+  document.getElementById("admin-page").style.display="block";
+  document.getElementById("btn-logout").style.display="block";
+  loadDocs();
+}
+
+async function loadDocs(){
+  try{
+    const res=await fetch(`${API}/doc/all`,{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(!res.ok){toast("Failed to load documents","error");return;}
+    allDocs=data.documents||[];
+    updateStats(); buildCourseTabs(); renderDocs();
+  }catch{toast("Cannot connect to server","error");}
+}
+
+function updateStats(){
+  document.getElementById("s-total").textContent=allDocs.length;
+  document.getElementById("s-pending").textContent=allDocs.filter(d=>d.status==="pending").length;
+  document.getElementById("s-approved").textContent=allDocs.filter(d=>d.status==="approved").length;
+  document.getElementById("s-rejected").textContent=allDocs.filter(d=>d.status==="rejected").length;
+}
+
+function parseCourse(doc){
+  const m=(doc.originalname||"").match(/^\[(.+?)\]/);
+  return m?m[1]:"Uncategorized";
+}
+
+function buildCourseTabs(){
+  const courses=[...new Set(allDocs.map(parseCourse))].sort();
+  const wrap=document.getElementById("course-tabs");
+  // keep "All" tab
+  wrap.innerHTML=`<button class="course-tab ${activeCourse===''?'active':''}" onclick="filterCourse('')" data-course="">All Courses (${allDocs.length})</button>`;
+  courses.forEach(c=>{
+    const count=allDocs.filter(d=>parseCourse(d)===c).length;
+    const btn=document.createElement("button");
+    btn.className="course-tab"+(activeCourse===c?" active":"");
+    btn.setAttribute("data-course",c);
+    btn.textContent=`${c} (${count})`;
+    btn.onclick=()=>filterCourse(c);
+    wrap.appendChild(btn);
+  });
+}
+
+function filterCourse(course){
+  activeCourse=course;
+  document.querySelectorAll(".course-tab").forEach(t=>{
+    t.classList.toggle("active",t.getAttribute("data-course")===course);
+  });
+  renderDocs();
+}
+
+function renderDocs(){
+  const search=document.getElementById("search-input").value.toLowerCase();
+  const status=document.getElementById("filter-status").value;
+  const tbody=document.getElementById("doc-tbody");
+
+  let list=allDocs.filter(doc=>{
+    const course=parseCourse(doc);
+    const matchCourse=activeCourse===''||course===activeCourse;
+    const matchStatus=status===''||doc.status===status;
+    const matchSearch=(doc.student_name||"").toLowerCase().includes(search)||
+      (doc.student_id||"").toLowerCase().includes(search)||
+      (doc.originalname||"").toLowerCase().includes(search)||
+      (doc.email||"").toLowerCase().includes(search);
+    return matchCourse&&matchStatus&&matchSearch;
+  });
+
+  if(list.length===0){tbody.innerHTML=`<tr><td colspan="8" class="empty-state">No documents found</td></tr>`;return;}
+
+  tbody.innerHTML=list.map(doc=>{
+    const d=new Date(doc.created_at).toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'});
+    const course=parseCourse(doc);
+    const cleanName=(doc.originalname||"").replace(/^\[.+?\]\s*/,"");
+    const decided=doc.status==="approved"||doc.status==="rejected";
+    return `<tr id="row-${doc.id}">
+      <td><div class="td-file"><div class="td-file-icon">📄</div><div><div style="font-weight:700;font-size:13px">${cleanName||doc.originalname}</div></div></div></td>
+      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${course}</td>
+      <td style="white-space:nowrap;font-weight:600">${doc.student_name||"—"}</td>
+      <td style="font-size:13px;color:var(--muted)">${doc.student_id||"—"}</td>
+      <td style="white-space:nowrap;font-size:13px;color:var(--muted)">${d}</td>
+      <td><span class="badge ${doc.status}">${doc.status}</span></td>
+      <td>
+        <div class="note-cell">
+          <textarea class="note-mini" id="note-${doc.id}" placeholder="Add note...">${doc.admin_note||""}</textarea>
+        </div>
+      </td>
+      <td>
+        <div class="action-cell">
+          <button class="btn-approve-sm" onclick="changeStatus(${doc.id},'approved')" ${decided?"disabled":""}>✓</button>
+          <button class="btn-reject-sm" onclick="changeStatus(${doc.id},'rejected')" ${decided?"disabled":""}>✗</button>
+          <a href="http://localhost:5000/uploads/${doc.filename}" target="_blank" class="btn-view-sm">View</a>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function changeStatus(id,status){
+  const note=document.getElementById(`note-${id}`).value;
+  try{
+    const res=await fetch(`${API}/doc/status/${id}`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`},
+      body:JSON.stringify({status,admin_note:note})
     });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.message || data.error || "Invalid credentials!");
-      return;
-    }
-
-    if (!data.user || data.user.role !== "admin") {
-      alert("Not an admin account!");
-      return;
-    }
-
-    token = data.token;
-    localStorage.setItem("token_admin", token);
-
-    adminAuth.classList.add("hidden");
-    adminPanel.classList.remove("hidden");
-
-    loadAllDocs();
-
-  } catch (err) {
-    alert("Server error or API not reachable");
-    console.log(err);
-  }
-};
-
-// -------------------- LOGOUT --------------------
-btnLogout.onclick = () => {
-  localStorage.removeItem("token_admin");
-  token = null;
-  adminPanel.classList.add("hidden");
-  adminAuth.classList.remove("hidden");
-};
-
-
-// -------------------- LOAD DOCUMENTS --------------------
-async function loadAllDocs() {
-  const res = await fetch(`${API}/doc/all`, {
-      headers: { Authorization: `Bearer ${token}` }
-  });
-
-  const data = await res.json();
-  if (!res.ok) return alert("Failed to load documents");
-
-  renderDocs(data.documents);
+    const data=await res.json();
+    if(!res.ok){toast(data.error||"Update failed","error");return;}
+    toast(`Document ${status}!`);
+    loadDocs();
+  }catch{toast("Update failed","error");}
 }
 
-function renderDocs(list) {
-  docsTable.innerHTML = "";
+document.getElementById("search-input").oninput=renderDocs;
+document.getElementById("filter-status").onchange=renderDocs;
 
-  let search = searchInput.value.toLowerCase();
-  let status = filterStatus.value;
-
-  const filtered = list.filter(doc =>
-      (status === "" || doc.status === status) &&
-      (
-        (doc.student_name||"").toLowerCase().includes(search) ||
-        doc.student_id.toLowerCase().includes(search) ||
-        doc.originalname.toLowerCase().includes(search)
-      )
-  );
-
-  if (filtered.length === 0) {
-      docsTable.innerHTML = "<p>No documents found.</p>";
-      return;
-  }
-
-  filtered.forEach(doc => {
-      const card = document.createElement("div");
-      card.className = "doc-card";
-
-      card.innerHTML = `
-          <h3>${doc.originalname}</h3>
-         <p><b>Student:</b> ${doc.student_name||""} (${doc.student_id||""})</p>
-          <p><b>Email:</b> ${doc.email}</p>
-          <p><b>Date:</b> ${doc.created_at}</p>
-          <p><b>Status:</b> <span class="status ${doc.status}">
-              ${doc.status.toUpperCase()}
-          </span></p>
-
-          <p><a href="http://localhost:5000/uploads/${doc.filename}" target="_blank">View File</a></p>
-
-          <textarea placeholder="Write note..." id="note-${doc.id}">${doc.admin_note || ""}</textarea>
-
-          <button onclick="changeStatus(${doc.id}, 'approved')">Approve</button>
-          <button onclick="changeStatus(${doc.id}, 'rejected')" class="reject">Reject</button>
-      `;
-
-      docsTable.appendChild(card);
-  });
-}
-
-async function changeStatus(id, status) {
-  const note = document.getElementById(`note-${id}`).value;
-
-  const res = await fetch(`${API}/doc/status/${id}`, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ status, admin_note: note })
-  });
-
-  const data = await res.json();
-  if (!res.ok) return alert(data.error);
-
-  alert("Updated!");
-  loadAllDocs();
-}
-
-searchInput.oninput = loadAllDocs;
-filterStatus.onchange = loadAllDocs;
-
-if (token) {
-    adminAuth.classList.add("hidden");
-    adminPanel.classList.remove("hidden");
-    loadAllDocs();
+if(token){
+  document.getElementById("auth-page").style.display="none";
+  showPanel();
+}else{
+  document.getElementById("auth-page").style.display="flex";
 }
 </script>
-
-
 </body>
 </html>

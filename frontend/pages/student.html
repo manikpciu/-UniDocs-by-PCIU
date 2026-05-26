@@ -3,294 +3,432 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCIU Student Portal</title>
+<title>Student Portal — PCIU DocTrack</title>
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-    background-size: 400% 400%;
-    animation: gradientBG 12s ease infinite;
-    color: #333;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1b3e;--navy2:#112244;--navy3:#162a52;
+  --gold:#c9a84c;--gold2:#e2c06a;
+  --text:#f0f4ff;--muted:#8899bb;
+  --border:rgba(201,168,76,0.2);
 }
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-header {
-    background: #fff;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: relative;
-}
-header img { width: 100px; margin-bottom: 8px; }
-header h1 { margin: 0; color: #222; }
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
-.back-home-btn {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #004080;
-    color: #fff;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: auto;
-}
-.back-home-btn:hover { background: #0066cc; }
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:70px;background:rgba(13,27,62,0.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-logo-wrap{width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;border:2px solid var(--gold)}
+.nav-logo-wrap img{width:100%;height:100%;object-fit:contain;padding:3px}
+.nav-title{font-size:16px;font-weight:800;color:var(--text)}
+.nav-sub{font-size:11px;color:var(--muted)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-badge{display:none;padding:6px 16px;background:rgba(201,168,76,0.12);border:1px solid var(--border);border-radius:20px;font-size:14px;color:var(--gold);font-weight:600;align-items:center;gap:6px}
+.home-link{color:var(--muted);font-size:14px;text-decoration:none;padding:8px 18px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);transition:all .2s}
+.home-link:hover{color:var(--text);border-color:var(--border)}
+.logout-btn{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.25);padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:none;transition:all .2s}
+.logout-btn:hover{background:rgba(239,68,68,0.2)}
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-.hidden { display: none; }
-h2 { text-align: center; margin-bottom: 20px; color: #444; }
-input, button {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-}
-button {
-    background: #1a73e8;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-button:hover { background: #155fc0; }
+/* COURSE BANNER */
+.course-banner{background:rgba(201,168,76,0.1);border-bottom:1px solid var(--border);padding:12px 60px;display:none;align-items:center;gap:10px;font-size:14px;color:var(--gold)}
+.course-banner strong{font-weight:800;font-size:15px}
 
-.docs-table { margin-top: 20px; }
-.doc-card {
-    background: #fafafa;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 12px;
+/* AUTH */
+.auth-page{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px}
+.auth-card{background:var(--navy2);border:1.5px solid var(--border);border-radius:22px;padding:50px 48px;width:100%;max-width:500px}
+.auth-header{text-align:center;margin-bottom:36px}
+.auth-icon{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;overflow:hidden;border:2px solid var(--gold)}
+.auth-icon img{width:100%;height:100%;object-fit:contain;padding:6px}
+.auth-header h2{font-size:28px;font-weight:900;color:var(--text)}
+.auth-header p{font-size:15px;color:var(--muted);margin-top:6px}
+.course-info-box{background:rgba(201,168,76,0.08);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:var(--gold);display:none}
+.tab-row{display:flex;background:rgba(0,0,0,0.25);border-radius:12px;padding:5px;margin-bottom:32px;border:1px solid var(--border)}
+.tab{flex:1;padding:12px;text-align:center;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;border:none;background:transparent}
+.tab.active{background:var(--gold);color:var(--navy)}
+.field-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px}
+.field-input{width:100%;background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.08);border-radius:11px;padding:15px 18px;color:var(--text);font-size:16px;outline:none;transition:all .2s;margin-bottom:20px}
+.field-input:focus{border-color:var(--gold);background:rgba(201,168,76,0.05)}
+.field-input::placeholder{color:#4a5a7a}
+select.field-input{cursor:pointer}
+select.field-input option{background:var(--navy2);color:var(--text)}
+.btn-submit{width:100%;padding:16px;background:var(--gold);color:var(--navy);border:none;border-radius:11px;font-size:17px;font-weight:900;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-submit:hover{background:var(--gold2)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+
+/* DASHBOARD */
+.dash-page{flex:1;display:none;padding:40px 60px 80px;width:100%;max-width:1100px;margin:0 auto}
+.dash-heading{margin-bottom:28px}
+.dash-heading h2{font-size:30px;font-weight:900}
+.dash-heading h2 span{color:var(--gold)}
+.dash-heading p{font-size:15px;color:var(--muted);margin-top:5px}
+
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.info-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.info-card .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.info-card .val{font-size:16px;font-weight:700;color:var(--text);word-break:break-all}
+
+.section-box{background:var(--navy2);border:1.5px solid var(--border);border-radius:16px;padding:28px;margin-bottom:22px}
+.section-box-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+
+.drop-zone{border:2px dashed rgba(201,168,76,0.25);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:18px}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--gold);background:rgba(201,168,76,0.05)}
+.drop-zone-icon{font-size:40px;margin-bottom:10px}
+.drop-zone p{color:var(--muted);font-size:14px;margin-bottom:4px}
+.drop-zone small{color:#4a5a7a;font-size:13px}
+input[type=file]{display:none}
+
+.upload-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:flex-end}
+.upload-grid>div .field-input{margin-bottom:0}
+.btn-upload{padding:15px 24px;background:var(--gold);color:var(--navy);border:none;border-radius:11px;font-size:15px;font-weight:900;cursor:pointer;white-space:nowrap;transition:all .2s;height:54px}
+.btn-upload:hover{background:var(--gold2)}
+.btn-upload:disabled{opacity:.5;cursor:not-allowed}
+
+/* DOCUMENT TABLE */
+.doc-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead tr{background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border)}
+thead th{padding:14px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.05);transition:background .15s}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+tbody tr:last-child{border-bottom:none}
+td{padding:14px 16px;color:var(--text);vertical-align:middle}
+.td-file{font-weight:700;display:flex;align-items:center;gap:10px}
+.td-file-icon{width:34px;height:34px;background:rgba(201,168,76,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.td-course{color:var(--muted);font-size:13px}
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+.badge.pending{background:rgba(234,179,8,0.12);color:#fde047;border:1px solid rgba(234,179,8,0.25)}
+.badge.approved{background:rgba(34,197,94,0.12);color:#86efac;border:1px solid rgba(34,197,94,0.25)}
+.badge.rejected{background:rgba(239,68,68,0.12);color:#fca5a5;border:1px solid rgba(239,68,68,0.25)}
+.td-note{font-size:13px;color:var(--muted);max-width:180px}
+.td-note span{background:rgba(0,0,0,0.2);border-left:2px solid var(--gold);padding:4px 8px;border-radius:0 4px 4px 0;display:block}
+.btn-view-sm{color:var(--gold);font-size:13px;font-weight:700;text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:7px;white-space:nowrap;transition:all .2s}
+.btn-view-sm:hover{background:rgba(201,168,76,0.1)}
+.empty-state{text-align:center;padding:44px;color:#4a5a7a;font-size:15px}
+
+.toast{position:fixed;top:22px;right:22px;padding:14px 24px;border-radius:11px;font-size:14px;font-weight:700;z-index:999;display:none;max-width:360px;border:1px solid}
+.toast.success{background:#0a2e1a;border-color:#22c55e;color:#86efac}
+.toast.error{background:#2e0a0a;border-color:#ef4444;color:#fca5a5}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(13,27,62,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+
+@media(max-width:768px){
+  nav,.dash-page{padding-left:18px;padding-right:18px}
+  .auth-card{padding:32px 20px}
+  .info-grid{grid-template-columns:1fr 1fr}
+  .upload-grid{grid-template-columns:1fr}
+  .course-banner{padding-left:18px;padding-right:18px}
 }
-.status-pending { color: #b21f1f; font-weight: bold; }
-.status-approved { color: #28a745; font-weight: bold; }
-.status-rejected { color: #dc3545; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<header>
-    <img src="PCIU_Logo.png" alt="PCIU Logo">
-    <h1>Port City International University</h1>
-    <button class="back-home-btn" onclick="window.location.href='index.html'">Back Home</button>
-</header>
-
-<div class="container" id="auth-section">
-    <h2 id="auth-title">Student Login</h2>
-    <div id="login-form">
-        <input type="email" id="login-email" placeholder="PCIU Email">
-        <input type="password" id="login-pass" placeholder="Password">
-        <button id="btn-login">Login</button>
-        <p>New here? <a href="#" id="go-register">Create an account</a></p>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo-wrap"><img src="PCIU_Logo.png" alt="PCIU"></div>
+    <div>
+      <div class="nav-title">Student Portal</div>
+      <div class="nav-sub">PCIU DocTrack</div>
     </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-badge" id="nav-badge">👤 <span id="nav-name"></span></div>
+    <a href="index.html" class="home-link">← Home</a>
+    <button class="logout-btn" id="btn-logout">Logout</button>
+  </div>
+</nav>
 
-<div id="register-form" class="hidden">
-    <input type="text" id="reg-name" placeholder="Full Name">
-    <input type="text" id="reg-id" placeholder="Student ID">
-    <input type="email" id="reg-email" placeholder="PCIU Email">
-    <input type="password" id="reg-pass" placeholder="Password">
-    <button id="btn-register">Create Account</button>
-    <p>Already have an account? <a href="#" id="go-login">Back to Login</a></p>
+<div class="course-banner" id="course-banner">
+  📚 You are submitting for: <strong id="banner-course"></strong>
 </div>
+
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div class="auth-page" id="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon"><img src="PCIU_Logo.png" alt="PCIU"></div>
+      <h2>Student Portal</h2>
+      <p>Login or create your account to continue</p>
+    </div>
+    <div class="course-info-box" id="course-info-box">
+      📚 Submitting for: <strong id="course-info-text"></strong>
+    </div>
+    <div class="tab-row">
+      <button class="tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab" id="tab-reg" onclick="switchTab('register')">Create Account</button>
+    </div>
+    <div id="login-form">
+      <label class="field-label">Email Address</label>
+      <input class="field-input" type="email" id="login-email" placeholder="yourname@pciu.ac.bd">
+      <label class="field-label">Password</label>
+      <input class="field-input" type="password" id="login-pass" placeholder="Enter your password">
+      <button class="btn-submit" id="btn-login">Login to Portal</button>
+    </div>
+    <div id="reg-form" class="hidden">
+      <label class="field-label">Full Name</label>
+      <input class="field-input" type="text" id="reg-name" placeholder="e.g. Md. Rahim Uddin">
+      <label class="field-label">Student ID</label>
+      <input class="field-input" type="text" id="reg-id" placeholder="e.g. 2020-1-60-049">
+      <label class="field-label">Email Address</label>
+      <input class="field-input" type="email" id="reg-email" placeholder="yourname@pciu.ac.bd">
+      <label class="field-label">Password</label>
+      <input class="field-input" type="password" id="reg-pass" placeholder="Minimum 6 characters">
+      <button class="btn-submit" id="btn-register">Create Account</button>
+    </div>
+  </div>
 </div>
 
-<div class="container hidden" id="dashboard">
-    <h2>Student Dashboard</h2>
-    <p><b>Name:</b> <span id="d-name"></span></p>
-    <p><b>Email:</b> <span id="d-email"></span></p>
-    <p><b>Student ID:</b> <span id="d-sid"></span></p>
-    <button id="btn-logout">Logout</button>
+<!-- DASHBOARD -->
+<div class="dash-page" id="dash-page">
+  <div class="dash-heading">
+    <h2>Welcome back, <span id="d-name"></span> 👋</h2>
+    <p>Manage your documents and track submission status below</p>
+  </div>
 
-    <hr>
-    <h3>Upload Document</h3>
-    <input type="text" id="doc-title" placeholder="Document Title">
-    <input type="file" id="doc-file">
-    <button id="btn-upload">Upload</button>
+  <div class="info-grid">
+    <div class="info-card"><div class="lbl">Full Name</div><div class="val" id="di-name">—</div></div>
+    <div class="info-card"><div class="lbl">Student ID</div><div class="val" id="di-id">—</div></div>
+    <div class="info-card"><div class="lbl">Email</div><div class="val" id="di-email" style="font-size:13px">—</div></div>
+  </div>
 
-    <h3>My Submissions</h3>
-    <div id="my-docs" class="docs-table"></div>
+  <div class="section-box">
+    <div class="section-box-title">📤 Upload Document</div>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="drop-zone-icon">📂</div>
+      <p>Drag & drop your file here, or click to browse</p>
+      <small id="file-label">PDF, DOC, JPG files supported</small>
+    </div>
+    <input type="file" id="file-input" accept=".pdf,.doc,.docx,.jpg,.png">
+    <div class="upload-grid">
+      <div>
+        <label class="field-label">Course</label>
+        <select class="field-input" id="doc-course">
+          <option value="">— Select Course —</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Document Title</label>
+        <input class="field-input" type="text" id="doc-title" placeholder="e.g. Assignment 1, Mid Exam Report">
+      </div>
+      <button class="btn-upload" id="btn-upload">Upload</button>
+    </div>
+  </div>
+
+  <div class="section-box">
+    <div class="section-box-title">📋 My Submissions</div>
+    <div class="doc-table-wrap">
+      <table id="doc-table">
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Course</th>
+            <th>Uploaded</th>
+            <th>Status</th>
+            <th>Admin Note</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="doc-tbody">
+          <tr><td colspan="6" class="empty-state">No documents uploaded yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <script>
 const API = "http://localhost:5000/api";
+let token = localStorage.getItem("pciu_token");
+let currentFile = null;
 
-const authSection = document.getElementById("auth-section");
-const dashboard = document.getElementById("dashboard");
-const goRegister = document.getElementById("go-register");
-const goLogin = document.getElementById("go-login");
-const btnRegister = document.getElementById("btn-register");
-const btnLogin = document.getElementById("btn-login");
-const btnLogout = document.getElementById("btn-logout");
-const btnUpload = document.getElementById("btn-upload");
+// Course list — admin can add more
+const COURSES = [
+  "CSE101 — Introduction to Programming",
+  "CSE201 — Data Structures",
+  "CSE301 — Software Engineering",
+  "CSE401 — Machine Learning",
+  "BBA101 — Business Communication",
+  "BBA201 — Financial Accounting",
+  "EEE101 — Basic Electronics",
+  "EEE201 — Circuit Analysis",
+  "ENG101 — English for Academic Purposes",
+];
 
-const dName = document.getElementById("d-name");
-const dEmail = document.getElementById("d-email");
-const dSID = document.getElementById("d-sid");
-const myDocs = document.getElementById("my-docs");
+// Check URL for course param
+const urlParams = new URLSearchParams(window.location.search);
+const urlCourse = urlParams.get('course') || '';
 
-let token = localStorage.getItem("token") || null;
+function init(){
+  // Populate course dropdown
+  const sel = document.getElementById("doc-course");
+  COURSES.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
 
-goRegister.onclick = () => {
-    document.getElementById("login-form").classList.add("hidden");
-    document.getElementById("register-form").classList.remove("hidden");
-};
-goLogin.onclick = () => {
-    document.getElementById("register-form").classList.add("hidden");
-    document.getElementById("login-form").classList.remove("hidden");
-};
-
-btnRegister.onclick = async () => {
-    const name = document.getElementById("reg-name").value.trim();
-    const sid = document.getElementById("reg-id").value.trim();
-    const email = document.getElementById("reg-email").value.trim();
-    const pass = document.getElementById("reg-pass").value.trim();
-
-    if (!name || !sid || !email || !pass) return alert("All fields required!");
-
-    const res = await fetch(`${API}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, student_id: sid, email, password: pass, role: "student" })
-    });
-
-    const data = await res.json();
-    if (!res.ok) return alert(data.error);
-
-    alert("Account created!");
-    goLogin.click();
-};
-
-btnLogin.onclick = async () => {
-    const email = document.getElementById("login-email").value.trim();
-    const pass = document.getElementById("login-pass").value.trim();
-
-    if (!email || !pass) return alert("Enter email & password!");
-
-    const res = await fetch(`${API}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password: pass })
-    });
-
-    const data = await res.json();
-    if (!res.ok) return alert(data.error);
-
-    token = data.token;
-    localStorage.setItem("token", token);
-
-    loadMe();
-};
-
-async function loadMe() {
-    if (!token) return;
-
-    const res = await fetch(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-
-    const data = await res.json();
-    if (!res.ok) return alert("Login again");
-
-    const user = data.user; // CORRECT
-    console.log("User Loaded:", user);
-
-    authSection.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-
-    dName.textContent = user.name;
-    dEmail.textContent = user.email;
-    dSID.textContent = user.student_id;
-
-    loadDocuments();  // MUST HAVE
-}
-
-btnLogout.onclick = () => {
-    token = null;
-    localStorage.removeItem("token");
-    dashboard.classList.add("hidden");
-    authSection.classList.remove("hidden");
-};
-
-btnUpload.onclick = async () => {
-    const title = document.getElementById("doc-title").value.trim();
-    const file = document.getElementById("doc-file").files[0];
-
-    if (!title || !file) return alert("Enter title & file!");
-
-    const form = new FormData();
-    form.append("title", title);
-    form.append("document", file);
-
-    const res = await fetch(`${API}/doc/upload`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: form
-    });
-
-    const data = await res.json();
-    if (!res.ok) return alert(data.error);
-
-    alert("Uploaded!");
-    document.getElementById("doc-title").value = "";
-    document.getElementById("doc-file").value = "";
-
-    loadDocuments();
-};
-
-async function loadDocuments() {
-    const res = await fetch(`${API}/doc/my`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-
-    const data = await res.json();
-    if (!res.ok) return;
-
-    const docs = data.documents;
-
-    myDocs.innerHTML = "";
-
-    if (docs.length === 0) {
-        myDocs.innerHTML = "<p>No documents uploaded yet.</p>";
-        return;
+  // If course in URL, show banner and pre-select
+  if(urlCourse){
+    document.getElementById("course-banner").style.display = "flex";
+    document.getElementById("banner-course").textContent = urlCourse;
+    document.getElementById("course-info-box").style.display = "block";
+    document.getElementById("course-info-text").textContent = urlCourse;
+    // pre-select matching course
+    for(let opt of sel.options){
+      if(opt.value.includes(urlCourse) || opt.value === urlCourse){
+        opt.selected = true; break;
+      }
     }
+  }
+}
+init();
 
-    docs.forEach(doc => {
-        const div = document.createElement("div");
-        div.className = "doc-card";
-
-        div.innerHTML = `
-            <h4>${doc.originalname}</h4>
-            <p><b>Uploaded:</b> ${doc.created_at || ""}</p>
-            <p>Status: <span class="status-${doc.status}">${doc.status}</span></p>
-            <p><a target="_blank" href="http://localhost:5000/uploads/${doc.filename}">View</a></p>
-            ${doc.admin_note ? `<p><b>Admin Note:</b> ${doc.admin_note}</p>` : ""}
-        `;
-
-        myDocs.appendChild(div);
-    });
+function toast(msg, type="success"){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast "+type; t.style.display = "block";
+  setTimeout(()=>t.style.display="none", 3500);
 }
 
-if (token) loadMe();
-</script>
+function switchTab(tab){
+  document.getElementById("tab-login").classList.toggle("active", tab==="login");
+  document.getElementById("tab-reg").classList.toggle("active", tab==="register");
+  document.getElementById("login-form").classList.toggle("hidden", tab!=="login");
+  document.getElementById("reg-form").classList.toggle("hidden", tab!=="register");
+}
 
-</body>   
+const dropZone = document.getElementById("drop-zone");
+dropZone.addEventListener("dragover", e=>{e.preventDefault();dropZone.classList.add("drag")});
+dropZone.addEventListener("dragleave", ()=>dropZone.classList.remove("drag"));
+dropZone.addEventListener("drop", e=>{
+  e.preventDefault(); dropZone.classList.remove("drag");
+  currentFile = e.dataTransfer.files[0];
+  if(currentFile) document.getElementById("file-label").textContent = "✓ "+currentFile.name;
+});
+document.getElementById("file-input").addEventListener("change", e=>{
+  currentFile = e.target.files[0];
+  if(currentFile) document.getElementById("file-label").textContent = "✓ "+currentFile.name;
+});
+
+document.getElementById("btn-login").onclick = async ()=>{
+  const email = document.getElementById("login-email").value.trim();
+  const pass  = document.getElementById("login-pass").value;
+  if(!email||!pass){toast("Please fill in all fields","error");return;}
+  const btn = document.getElementById("btn-login");
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Logging in...';
+  try{
+    const res  = await fetch(`${API}/auth/login`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password:pass})});
+    const data = await res.json();
+    if(!res.ok){toast(data.error||"Invalid credentials","error");return;}
+    if(data.user.role!=="student"){toast("Please use the Admin panel.","error");return;}
+    token=data.token; localStorage.setItem("pciu_token",token);
+    showDash(data.user); toast("Welcome back, "+data.user.name+"!");
+  }catch{toast("Cannot connect to server","error");}
+  finally{btn.disabled=false;btn.textContent="Login to Portal";}
+};
+
+document.getElementById("btn-register").onclick = async ()=>{
+  const name=document.getElementById("reg-name").value.trim();
+  const sid=document.getElementById("reg-id").value.trim();
+  const email=document.getElementById("reg-email").value.trim();
+  const pass=document.getElementById("reg-pass").value;
+  if(!name||!sid||!email||!pass){toast("All fields required","error");return;}
+  if(pass.length<6){toast("Password min 6 characters","error");return;}
+  const btn=document.getElementById("btn-register");
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Creating...';
+  try{
+    const res=await fetch(`${API}/auth/register`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,student_id:sid,email,password:pass,role:"student"})});
+    const data=await res.json();
+    if(!res.ok){toast(data.error||"Registration failed","error");return;}
+    toast("Account created! Login now."); switchTab("login");
+  }catch{toast("Cannot connect to server","error");}
+  finally{btn.disabled=false;btn.textContent="Create Account";}
+};
+
+document.getElementById("btn-upload").onclick = async ()=>{
+  const course = document.getElementById("doc-course").value;
+  const title  = document.getElementById("doc-title").value.trim();
+  if(!course){toast("Please select a course","error");return;}
+  if(!title){toast("Enter a document title","error");return;}
+  if(!currentFile){toast("Select a file first","error");return;}
+  const form = new FormData();
+  // title includes course prefix so admin sees it
+  form.append("title", `[${course}] ${title}`);
+  form.append("document", currentFile);
+  const btn = document.getElementById("btn-upload");
+  btn.disabled=true; btn.textContent="Uploading...";
+  try{
+    const res=await fetch(`${API}/doc/upload`,{method:"POST",headers:{Authorization:`Bearer ${token}`},body:form});
+    const data=await res.json();
+    if(!res.ok){toast(data.error||"Upload failed","error");return;}
+    toast("Document uploaded successfully!");
+    document.getElementById("doc-title").value="";
+    document.getElementById("file-label").textContent="PDF, DOC, JPG files supported";
+    currentFile=null; loadDocs();
+  }catch{toast("Upload failed","error");}
+  finally{btn.disabled=false;btn.textContent="Upload";}
+};
+
+document.getElementById("btn-logout").onclick = ()=>{
+  localStorage.removeItem("pciu_token"); token=null;
+  document.getElementById("dash-page").style.display="none";
+  document.getElementById("auth-page").style.display="flex";
+  document.getElementById("btn-logout").style.display="none";
+  document.getElementById("nav-badge").style.display="none";
+};
+
+function showDash(user){
+  document.getElementById("auth-page").style.display="none";
+  document.getElementById("dash-page").style.display="block";
+  document.getElementById("d-name").textContent=user.name;
+  document.getElementById("di-name").textContent=user.name;
+  document.getElementById("di-id").textContent=user.student_id||"—";
+  document.getElementById("di-email").textContent=user.email;
+  document.getElementById("nav-name").textContent=user.name;
+  document.getElementById("nav-badge").style.display="flex";
+  document.getElementById("btn-logout").style.display="block";
+  loadDocs();
+}
+
+async function loadDocs(){
+  try{
+    const res=await fetch(`${API}/doc/my`,{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(!res.ok) return;
+    const tbody=document.getElementById("doc-tbody");
+    if(!data.documents||data.documents.length===0){
+      tbody.innerHTML='<tr><td colspan="6" class="empty-state">No documents uploaded yet</td></tr>';return;
+    }
+    tbody.innerHTML=data.documents.map(doc=>{
+      const d=new Date(doc.created_at).toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'});
+      // parse course from title [CSE101 — ...] filename
+      const titleMatch = (doc.originalname||"").match(/^\[(.+?)\]/);
+      const course = titleMatch ? titleMatch[1] : "—";
+      const cleanName = (doc.originalname||"").replace(/^\[.+?\]\s*/,"");
+      const note = doc.admin_note ? `<span>${doc.admin_note}</span>` : `<span style="color:#4a5a7a">—</span>`;
+      return `<tr>
+        <td><div class="td-file"><div class="td-file-icon">📄</div><div><div style="font-weight:700">${cleanName||doc.originalname}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${doc.originalname}</div></div></div></td>
+        <td><div class="td-course">${course}</div></td>
+        <td style="white-space:nowrap;color:var(--muted)">${d}</td>
+        <td><span class="badge ${doc.status}">${doc.status}</span></td>
+        <td class="td-note">${note}</td>
+        <td><a href="http://localhost:5000/uploads/${doc.filename}" target="_blank" class="btn-view-sm">View</a></td>
+      </tr>`;
+    }).join('');
+  }catch{}
+}
+
+(async()=>{
+  if(!token){document.getElementById("auth-page").style.display="flex";return;}
+  try{
+    const res=await fetch(`${API}/auth/me`,{headers:{Authorization:`Bearer ${token}`}});
+    const data=await res.json();
+    if(!res.ok) throw new Error();
+    showDash(data.user);
+  }catch{
+    localStorage.removeItem("pciu_token");token=null;
+    document.getElementById("auth-page").style.display="flex";
+  }
+})();
+</script>
+</body>
 </html>
